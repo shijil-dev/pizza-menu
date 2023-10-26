@@ -69,29 +69,54 @@ function Menu() {
   return (
     <main className="menu">
       <h2>Here's our Menu</h2>
-      {/* {pizzaData.map((pizza) => (
-        <Pizza pizza={pizza} />
-      ))} */}
-      <Pizza />
+      <ul className="pizzas">
+        {pizzaData.map((pizza) => (
+          <Pizza pizza={pizza} key={pizza.name} />
+        ))}
+      </ul>
     </main>
   );
 }
 
 function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We are not a real pizza company
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00 .
+        </p>
+      )}
     </footer>
   );
 }
 
-function Pizza() {
+function Order(props) {
   return (
-    <div>
-      <img src="/pizzas/prosciutto.jpg" alt="pizza prosciutto" />
-      <h3>pizza prosciutto</h3>
-      <p>Tomato, mozarella, ham, aragula, and burrata cheese</p>
+    <div className="order">
+      <p>
+        We're open until {props.closeHour}:00. Come visit us or order online.
+      </p>
+      <button className="btn">Order</button>
     </div>
+  );
+}
+
+function Pizza(props) {
+  return (
+    <li className="pizza">
+      <img src={props.pizza.photoName} alt="pizzaphotos" />
+      <div>
+        <h3>{props.pizza.name}</h3>
+        <p>{props.pizza.ingredients}</p>
+        <span>${props.pizza.price}</span>
+      </div>
+    </li>
   );
 }
 
